@@ -56,8 +56,13 @@ read-only mirror that maintainers never see.
   `android/app/build/outputs/apk/release/app-release-unsigned.apk`
 - `commit` is the full hash of tag `v0.1.0`:
   `6796e2d91ee97f73f1b640e0a1878046443cd420`
-- `prebuild` installs `platforms;android-36` + `build-tools;36.0.0` into the
-  build-server SDK; `sudo` installs `openjdk-21-jdk-headless` (Capacitor 8 /
+- `prebuild` locates `sdkmanager` under `$$SDK$$` (`cmdline-tools/*/bin` or the
+  legacy `tools/bin` layout used by the buildserver image) and installs
+  `platforms;android-36` + `build-tools;36.0.0` (the image preinstalls only up
+  to android-33 / build-tools 33.0.0)
+- `sudo` installs `openjdk-21-jdk-headless` + selects it via
+  `update-java-alternatives`, and `gradleprops` pins
+  `org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64` (Capacitor 8 /
   AGP 8.13 compile with Java 21).
 - `versionCode 1` / `versionName 0.1.0` are set in `android/app/build.gradle`;
   dependency metadata is excluded from the APK (`dependenciesInfo`) for
