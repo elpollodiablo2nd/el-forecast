@@ -26,9 +26,15 @@ read-only mirror that maintainers never see.
   and a 512x512 `images/icon.png`. Per fdroiddata policy these are NOT copied
   into fdroiddata — only the yml below is.
 - **fdroiddata recipe**: `fdroid/metadata/dk.elspot.app.yml` — the single file to
-  add to a fork of fdroiddata as `metadata/dk.elspot.app.yml`.
+  add to a fork of fdroiddata as `metadata/dk.elspot.app.yml`. It is in
+  `fdroid rewritemeta` canonical form and passes fdroiddata CI:
+  `check-jsonschema --schemafile schemas/metadata.json` (required fields incl.
+  `CurrentVersion`/`CurrentVersionCode`, `AutoUpdateMode: Version`), `fdroid lint`,
+  `fdroid rewritemeta` (no diff) and `fdroid checkupdates` (finds tag `v0.1.0`).
+  A `.fdroid.yml` with `commit: HEAD` is also at the root for own-CI
+  `fdroid build` runs against a mirror of this repo.
 - **Updates**: release tags `v*` (e.g. `v0.1.0`) drive F-Droid auto-updates via
-  `AutoUpdateMode: Version v%v` + `UpdateCheckMode: Tags`.
+  `AutoUpdateMode: Version` + `UpdateCheckMode: Tags`.
 
 ## How to submit (manual — needs a GitLab account)
 

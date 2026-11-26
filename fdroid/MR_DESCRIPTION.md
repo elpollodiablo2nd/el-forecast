@@ -63,7 +63,7 @@ competitors.
 ### Metadata
 
 * [x] Metadata is only `metadata/dk.elspot.app.yml` (valid YAML, LF endings). No texts/images/changelogs added in this MR — they are provided upstream.
-* [x] Release tagged (`v0.1.0`) and auto-update enabled (`AutoUpdateMode: Version v%v`, `UpdateCheckMode: Tags`).
+* [x] Release tagged (`v0.1.0`) and auto-update enabled (`AutoUpdateMode: Version`, `UpdateCheckMode: Tags`; `CurrentVersion: 0.1.0` / `CurrentVersionCode: 1` set). The file is in `fdroid rewritemeta` canonical form and passes fdroiddata CI: schema validation (`schemas/metadata.json`), `fdroid lint`, `fdroid rewritemeta` (no diff), `fdroid checkupdates`.
 * [x] IssueTracker and AuthorName are set.
 * [x] Reproducible builds: dependency metadata is excluded from the APK (`dependenciesInfo` disabled in `android/app/build.gradle`); build is deterministic from the committed `android/` Gradle project.
 * [x] `commit` is the full hash: `6796e2d91ee97f73f1b640e0a1878046443cd420` (tag `v0.1.0`).

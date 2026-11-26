@@ -1,5 +1,5 @@
 Categories:
-  - Science & Education
+  - Market & Price
 License: ISC
 AuthorName: elpollodiablo2nd
 WebSite: https://github.com/elpollodiablo2nd/el-forecast
@@ -20,12 +20,15 @@ Builds:
     sudo: apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
-    prebuild: $$SDK$$/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
+    prebuild: $$SDK$$/cmdline-tools/latest/bin/sdkmanager "platforms;android-36"
+      "build-tools;36.0.0"
     scanignore:
       - www/assets/timestral-5m.onnx
       - www/vendor/ort/ort-wasm-simd-threaded.wasm
       - models
       - android/gradle/wrapper/gradle-wrapper.jar
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
