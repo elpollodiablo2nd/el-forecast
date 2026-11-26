@@ -16,19 +16,17 @@ Builds:
   - versionName: 0.1.0
     versionCode: 1
     commit: HEAD
-    subdir: android
+    subdir: android/app
     sudo: apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
-    prebuild: "SM=\"$(ls \"$$SDK$$\"/cmdline-tools/*/bin/sdkmanager \"$$SDK$$\"/tools/bin/sdkmanager
-      2>/dev/null | head -n1)\"\ntest -n \"$SM\" || { echo \"sdkmanager not found
-      under $$SDK$$\"; exit 1; }\n\"$SM\" \"platforms;android-36\" \"build-tools;36.0.0\"\
-      \n"
+    prebuild: "SM=\"\"\nfor c in \"$$SDK$$\"/cmdline-tools/*/bin/sdkmanager \"$$SDK$$\"\
+      /tools/bin/sdkmanager; do\n  if [ -x \"$c\" ]; then SM=\"$c\"; break; fi\ndone\n\
+      test -n \"$SM\" || { echo \"sdkmanager not found under $$SDK$$\"; exit 1; }\n\
+      \"$SM\" \"platforms;android-36\" \"build-tools;36.0.0\"\n"
     scanignore:
-      - www/assets/timestral-5m.onnx
       - www/vendor/ort/ort-wasm-simd-threaded.wasm
-      - models
-      - android/gradle/wrapper/gradle-wrapper.jar
+      - android/app/src/main/assets/public/vendor/ort/ort-wasm-simd-threaded.wasm
     gradleprops:
       - org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64
 
