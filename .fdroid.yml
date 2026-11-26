@@ -21,7 +21,7 @@ Builds:
     gradle:
       - yes
     prebuild: "SM=\"\"\nfor c in \"$$SDK$$\"/cmdline-tools/*/bin/sdkmanager \"$$SDK$$\"\
-      /tools/bin/sdkmanager; do\n  if [ -x \"$c\" ]; then SM=\"$c\"; break; fi\ndone\n\
+      /tools/bin/sdkmanager; do\n  if [ -x \"$c\" ]; then SM=\"$c\"; break; fi\ndone\n
       test -n \"$SM\" || { echo \"sdkmanager not found under $$SDK$$\"; exit 1; }\n\
       \"$SM\" \"platforms;android-36\" \"build-tools;36.0.0\"\n"
     scanignore:
