@@ -1,7 +1,9 @@
 # F-Droid submission
 
-This repository is prepared for submission to the main F-Droid repository
-(https://f-droid.org). App id: `dk.elspot.app`.
+This repository is prepared for submission to the main F-Droid repository.
+App id: `dk.elspot.app`. **Note:** submissions go to
+**gitlab.com/fdroid/fdroiddata** — the GitHub repo `f-droid/fdroiddata` is a
+read-only mirror that maintainers never see.
 
 ## What is prepared here
 
@@ -19,19 +21,35 @@ This repository is prepared for submission to the main F-Droid repository
   Google Play services (the unused google-services hook was removed from the
   Gradle files). The only permission is `INTERNET`.
 - **License**: ISC — see `LICENSE`.
-- **Store listing**: `fastlane/metadata/android/en-US/` (title, short/full
-  description, changelog, 512x512 icon) — F-Droid reads these from the source repo.
-- **fdroiddata recipe**: `fdroid/metadata/dk.elspot.app.yml` plus
-  `fdroid/metadata/dk.elspot.app/en-US/` — copy both into a fork of
-  https://gitlab.com/fdroid/fdroiddata (`metadata/dk.elspot.app.yml` and
-  `metadata/dk.elspot.app/`).
+- **Store listing (read by F-Droid from this repo)**: `fastlane/metadata/android/en-US/`
+  with title.txt, short_description.txt, full_description.txt, changelogs/1.txt
+  and a 512x512 `images/icon.png`. Per fdroiddata policy these are NOT copied
+  into fdroiddata — only the yml below is.
+- **fdroiddata recipe**: `fdroid/metadata/dk.elspot.app.yml` — the single file to
+  add to a fork of fdroiddata as `metadata/dk.elspot.app.yml`.
 - **Updates**: release tags `v*` (e.g. `v0.1.0`) drive F-Droid auto-updates via
   `AutoUpdateMode: Version v%v` + `UpdateCheckMode: Tags`.
 
+## How to submit (manual — needs a GitLab account)
+
+1. Register on https://gitlab.com and fork https://gitlab.com/fdroid/fdroiddata
+   (optionally open an RFP issue at https://gitlab.com/fdroid/rfp first).
+2. In your fork, create a branch named `dk.elspot.app` (not the protected
+   `master`) and add exactly one file: `metadata/dk.elspot.app.yml`, copied from
+   `fdroid/metadata/dk.elspot.app.yml` in this repo.
+3. Open a merge request against `fdroid/fdroiddata` with title `New app: elspot`.
+   A filled-in MR description following their template is ready to paste in
+   [fdroid/MR_DESCRIPTION.md](fdroid/MR_DESCRIPTION.md).
+4. Watch the MR pipeline (it runs a real build of the recipe) and answer any
+   maintainer questions. After merge, F-Droid's build server signs and publishes
+   the APK; pushing new `v*` tags here afterwards is picked up automatically.
+
 ## Build recipe summary (fdroiddata)
 
-- `subdir: android`, `gradle: [release]` →
+- `subdir: android`, `gradle: [yes]` (no flavors → `assembleRelease`) →
   `android/app/build/outputs/apk/release/app-release-unsigned.apk`
+- `commit` is the full hash of tag `v0.1.0`:
+  `6796e2d91ee97f73f1b640e0a1878046443cd420`
 - `prebuild` installs `platforms;android-36` + `build-tools;36.0.0` into the
   build-server SDK; `sudo` installs `openjdk-21-jdk-headless` (Capacitor 8 /
   AGP 8.13 compile with Java 21).
@@ -39,21 +57,9 @@ This repository is prepared for submission to the main F-Droid repository
   dependency metadata is excluded from the APK (`dependenciesInfo`) for
   reproducible builds.
 
-## How to submit
-
-1. Push a release tag: `git tag v0.1.0 && git push origin v0.1.0`
-2. Fork https://gitlab.com/fdroid/fdroiddata, then copy
-   `fdroid/metadata/dk.elspot.app.yml` → `metadata/dk.elspot.app.yml` and
-   `fdroid/metadata/dk.elspot.app/` → `metadata/dk.elspot.app/`
-3. Optionally validate locally with fdroidserver:
-   `fdroid readmeta dk.elspot.app && fdroid lint dk.elspot.app`
-4. Open a merge request against `fdroid/fdroiddata` (the MR bot runs a real
-   build of the recipe). Alternatively open an issue requesting inclusion.
-5. After merge, F-Droid's build server builds and signs the APK; pushing new
-   `v*` tags afterwards is picked up automatically by `checkupdates`.
-
 ## Local / CI release build
 
 `tools/build-android-release.sh [versionName] [versionCode]` performs the full
 build (npm ci → sync-www → cap sync → launcher icon → `gradlew assembleRelease`)
 and is used by `.github/workflows/release-apk.yml` on `v*` tags.
+`npm test` runs the ONNX-vs-PyTorch WASM tests (5M/28M) plus the web suite.

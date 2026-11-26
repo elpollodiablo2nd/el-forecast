@@ -12,7 +12,7 @@ Repo: https://github.com/elpollodiablo2nd/el-forecast
 Builds:
 - versionName: 0.1.0
   versionCode: 1
-  commit: v0.1.0
+  commit: 6796e2d91ee97f73f1b640e0a1878046443cd420
   subdir: android
   sudo:
   - apt-get install -y openjdk-21-jdk-headless
@@ -24,6 +24,6 @@ Builds:
   - models
   - android/gradle/wrapper/gradle-wrapper.jar
   gradle:
-  - release
+  - 'yes'
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
