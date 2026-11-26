@@ -60,10 +60,11 @@ read-only mirror that maintainers never see.
   legacy `tools/bin` layout used by the buildserver image) and installs
   `platforms;android-36` + `build-tools;36.0.0` (the image preinstalls only up
   to android-33 / build-tools 33.0.0)
-- `sudo` installs `openjdk-21-jdk-headless` + selects it via
-  `update-java-alternatives`, and `gradleprops` pins
-  `org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64` (Capacitor 8 /
-  AGP 8.13 compile with Java 21).
+- `sudo` installs `openjdk-21-jdk-headless` (no-op on current images, which
+  already ship JDK 21), and `gradleprops` pins
+  `org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64` so Gradle uses
+  JDK 21 regardless of the image default (Capacitor 8 / AGP 8.13 compile with
+  Java 21).
 - `versionCode 1` / `versionName 0.1.0` are set in `android/app/build.gradle`;
   dependency metadata is excluded from the APK (`dependenciesInfo`) for
   reproducible builds.

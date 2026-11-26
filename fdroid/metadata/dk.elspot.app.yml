@@ -17,9 +17,7 @@ Builds:
     versionCode: 1
     commit: 6796e2d91ee97f73f1b640e0a1878046443cd420
     subdir: android
-    sudo:
-      - apt-get install -y openjdk-21-jdk-headless
-      - update-java-alternatives -s java-21-openjdk-amd64
+    sudo: apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
     prebuild: "SM=\"$(ls \"$$SDK$$\"/cmdline-tools/*/bin/sdkmanager \"$$SDK$$\"/tools/bin/sdkmanager

@@ -71,7 +71,7 @@ competitors.
 
 ### Pipeline
 
-* [ ] Pipelines pass (run on the fdroiddata fork's GitLab CI; the recipe builds with `subdir: android` + `gradle: [yes]`, installs `platforms;android-36` + `build-tools;36.0.0` in prebuild via the sdkmanager found under `$$SDK$$` — the buildserver image only preinstalls up to android-33 and exposes sdkmanager at `tools/bin/sdkmanager` — and installs/selects openjdk-21 via sudo + `org.gradle.java.home` gradleprop).
+* [ ] Pipelines pass (run on the fdroiddata fork's GitLab CI; the recipe builds with `subdir: android` + `gradle: [yes]`, installs `platforms;android-36` + `build-tools;36.0.0` in prebuild via the sdkmanager found under `$$SDK$$` — the buildserver image only preinstalls up to android-33 and exposes sdkmanager at `tools/bin/sdkmanager` — and pins JDK 21 via `org.gradle.java.home` gradleprop + `sudo apt-get install openjdk-21-jdk-headless`).
 
 Build notes for reviewers:
 
