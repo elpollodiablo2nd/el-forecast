@@ -1,0 +1,1 @@
+On-device forecast of Danish electricity spot prices (DK1/DK2)

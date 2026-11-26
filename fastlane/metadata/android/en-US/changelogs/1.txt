@@ -1,0 +1,3 @@
+Initial release: on-device Timestral ONNX price forecast for DK1/DK2 with
+bundled 5M model, live Energinet/Open-Meteo data and an offline price snapshot
+fallback.

@@ -1,0 +1,8 @@
+// Resolved from node_modules when present (local dev after `npm ci`), otherwise
+// from the vendored copy in vendor/capacitor-android (F-Droid builds without npm).
+def capacitorAndroidDir = new File('../node_modules/@capacitor/android/capacitor')
+if (!capacitorAndroidDir.isDirectory()) {
+    capacitorAndroidDir = new File('../vendor/capacitor-android/capacitor')
+}
+include ':capacitor-android'
+project(':capacitor-android').projectDir = capacitorAndroidDir

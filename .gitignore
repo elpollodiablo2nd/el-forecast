@@ -1,0 +1,19 @@
+dist/
+node_modules/
+__pycache__/
+
+# prebuilt binaries are not distributed from this repo (F-Droid builds from source)
+app-debug.apk
+*.apk
+
+# generated 28M model (reassemble from models/timestral-28m.part* when needed)
+www/assets/timestral-28m.onnx
+
+# Android build outputs (the android/ project itself is committed)
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/.idea/
+android/*.iml
+android/captures/
