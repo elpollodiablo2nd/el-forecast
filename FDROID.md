@@ -57,6 +57,27 @@ read-only mirror that maintainers never see.
   dependency metadata is excluded from the APK (`dependenciesInfo`) for
   reproducible builds.
 
+## Build verification (2026-11-26)
+
+The exact F-Droid path was exercised locally: clean clone of tag `v0.1.0`
+(no `node_modules`, vendored Capacitor used), Temurin JDK 21, SDK 36,
+`./gradlew --no-daemon assembleRelease` in `android/` → **BUILD SUCCESSFUL**.
+
+Resulting `app-release-unsigned.apk` (26 MB):
+
+- `aapt dump badging`: `dk.elspot.app`, `versionCode=1`, `versionName=0.1.0`
+  (matches the recipe), label `elspot`, launchable `dk.elspot.app.MainActivity`,
+  minSdk 24 / targetSdk 36, only `INTERNET` permission, not debuggable, unsigned
+  (`apksigner verify` → "DOES NOT VERIFY", no META-INF signatures — F-Droid signs it)
+- contains the full web bundle: `assets/public/index.html` (with the injected
+  `vendor/ort/ort.min.js` loader), the ORT WASM runtime, the bundled
+  `assets/timestral-5m.onnx` (22 MB) and the price snapshots; launcher icons at
+  all densities (the 192px icon is pixel-identical to the pixel-bolt source)
+- reproducible: two clean builds produce the identical SHA-256
+  (`def95bb63fe26c558987d67b23a6acc32f0d27ab02146b00c094ee7b9b8b6e86`)
+- app logic: `npm test` passes 128/128 (ONNX WASM vs PyTorch reference 5M/28M
+  + web suite)
+
 ## Local / CI release build
 
 `tools/build-android-release.sh [versionName] [versionCode]` performs the full
