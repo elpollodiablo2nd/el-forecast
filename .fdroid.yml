@@ -17,13 +17,23 @@ Builds:
     versionCode: 1
     commit: HEAD
     subdir: android/app
-    sudo: apt-get install -y openjdk-21-jdk-headless
+    sudo:
+      - apt-get install -y openjdk-21-jdk-headless curl unzip
+      - mkdir -p /opt/android-sdk/licenses /opt/android-sdk/platforms 
+        /opt/android-sdk/build-tools && printf 
+        '8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e\n'
+        > /opt/android-sdk/licenses/android-sdk-license
+      - test -d /opt/android-sdk/platforms/android-36 || { curl -sSL -o 
+        /tmp/p36.zip 
+        https://dl.google.com/android/repository/platform-36_r02.zip && unzip -q
+        -o /tmp/p36.zip -d /opt/android-sdk/platforms/; }
+      - test -d /opt/android-sdk/build-tools/36.0.0 || { curl -sSL -o 
+        /tmp/bt36.zip 
+        https://dl.google.com/android/repository/build-tools_r36_linux.zip && 
+        unzip -q -o /tmp/bt36.zip -d /tmp/bt36x && mv /tmp/bt36x/android-16 
+        /opt/android-sdk/build-tools/36.0.0; }
     gradle:
       - yes
-    prebuild: "SM=\"\"\nfor c in \"$$SDK$$\"/cmdline-tools/*/bin/sdkmanager \"$$SDK$$\"\
-      /tools/bin/sdkmanager; do\n  if [ -x \"$c\" ]; then SM=\"$c\"; break; fi\ndone\n
-      test -n \"$SM\" || { echo \"sdkmanager not found under $$SDK$$\"; exit 1; }\n\
-      \"$SM\" \"platforms;android-36\" \"build-tools;36.0.0\"\n"
     scanignore:
       - www/vendor/ort/ort-wasm-simd-threaded.wasm
       - android/app/src/main/assets/public/vendor/ort/ort-wasm-simd-threaded.wasm
