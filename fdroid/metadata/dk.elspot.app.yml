@@ -1,29 +1,31 @@
 Categories:
-- Science & Education
+  - Science & Education
 License: ISC
 AuthorName: elpollodiablo2nd
 WebSite: https://github.com/elpollodiablo2nd/el-forecast
 SourceCode: https://github.com/elpollodiablo2nd/el-forecast
 IssueTracker: https://github.com/elpollodiablo2nd/el-forecast/issues
 Changelog: https://github.com/elpollodiablo2nd/el-forecast/releases
+
 AutoName: elspot
+
 RepoType: git
 Repo: https://github.com/elpollodiablo2nd/el-forecast
+
 Builds:
-- versionName: 0.1.0
-  versionCode: 1
-  commit: 6796e2d91ee97f73f1b640e0a1878046443cd420
-  subdir: android
-  sudo:
-  - apt-get install -y openjdk-21-jdk-headless
-  prebuild:
-  - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
-  scanignore:
-  - www/assets/timestral-5m.onnx
-  - www/vendor/ort/ort-wasm-simd-threaded.wasm
-  - models
-  - android/gradle/wrapper/gradle-wrapper.jar
-  gradle:
-  - 'yes'
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: 6796e2d91ee97f73f1b640e0a1878046443cd420
+    subdir: android
+    sudo: apt-get install -y openjdk-21-jdk-headless
+    gradle:
+      - yes
+    prebuild: $$SDK$$/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
+    scanignore:
+      - www/assets/timestral-5m.onnx
+      - www/vendor/ort/ort-wasm-simd-threaded.wasm
+      - models
+      - android/gradle/wrapper/gradle-wrapper.jar
+
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
