@@ -23,23 +23,20 @@ Builds:
       - mkdir -p /opt/android-sdk/licenses && printf 
         '8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e\n'
         > /opt/android-sdk/licenses/android-sdk-license
-      - test -d /opt/android-sdk/platforms/android-36 || curl -sSL -o 
-        /tmp/p36.zip 
+      - test -d /opt/android-sdk/platforms/android-36 || curl -sSL -o /tmp/p36.zip
         https://dl.google.com/android/repository/platform-36_r02.zip
-      - test -d /opt/android-sdk/platforms/android-36 || unzip -q -o 
-        /tmp/p36.zip -d /opt/android-sdk/platforms/
-      - test -d /opt/android-sdk/build-tools/35.0.0 || curl -sSL -o 
-        /tmp/bt35.zip 
+      - test -d /opt/android-sdk/platforms/android-36 || unzip -q -o /tmp/p36.zip
+        -d /opt/android-sdk/platforms/
+      - test -d /opt/android-sdk/build-tools/35.0.0 || curl -sSL -o /tmp/bt35.zip
         https://dl.google.com/android/repository/build-tools_r35_linux.zip
-      - test -d /opt/android-sdk/build-tools/35.0.0 || { unzip -q -o 
-        /tmp/bt35.zip -d /tmp/bt35x && mv /tmp/bt35x/android-* 
-        /opt/android-sdk/build-tools/35.0.0; }
-      - test -d /opt/android-sdk/build-tools/36.0.0 || curl -sSL -o 
-        /tmp/bt36.zip 
+      - test -d /opt/android-sdk/build-tools/35.0.0 || { unzip -q -o /tmp/bt35.zip
+        -d /tmp/bt35x && mv /tmp/bt35x/android-* /opt/android-sdk/build-tools/35.0.0;
+        }
+      - test -d /opt/android-sdk/build-tools/36.0.0 || curl -sSL -o /tmp/bt36.zip
         https://dl.google.com/android/repository/build-tools_r36_linux.zip
-      - test -d /opt/android-sdk/build-tools/36.0.0 || { unzip -q -o 
-        /tmp/bt36.zip -d /tmp/bt36x && mv /tmp/bt36x/android-* 
-        /opt/android-sdk/build-tools/36.0.0; }
+      - test -d /opt/android-sdk/build-tools/36.0.0 || { unzip -q -o /tmp/bt36.zip
+        -d /tmp/bt36x && mv /tmp/bt36x/android-* /opt/android-sdk/build-tools/36.0.0;
+        }
     gradle:
       - yes
     scanignore:
