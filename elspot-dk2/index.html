@@ -476,7 +476,8 @@
 
         function scaleBand(med, q10, q90, k) {
             if (!isFinite(k)) return [q10, q90];
-            return [med - k * (med - q10), med + k * (q90 - med)];
+            var lo = med - k * (med - q10), hi = med + k * (q90 - med);
+            return [Math.min(lo, med), Math.max(hi, med)]; // median always stays inside the band
         }
 
         function horizonBucket(h) {
@@ -1539,7 +1540,7 @@
             var k = {}, bias = {};
             K_BUCKETS.forEach(function (H) {
                 k[H] = conformalK(byBucket[H], 0.85) || DEFAULT_K[H];
-                bias[H] = medianError(byBucket[H]) || 0; // level correction: shift p50 by median past error
+                bias[H] = medianError(byBucket[H]) || 0; // median past (med - actual); subtracted from raw p50 as debias
             });
             return { k: k, bias: bias };
         }
@@ -1571,9 +1572,11 @@
                 var forecast = [], preds = loadPreds();
                 for (var i = 0; i < horizon; i++) {
                     var t = new Date(last.getTime() + (i + 1) * HOUR_MS);
-                    var med = q[i * ONNX_Q + ONNX_MED_I] + (biasByBucket[horizonBucket(i)] || 0); // level-corrected median
+                    var bias = biasByBucket[horizonBucket(i)] || 0; // median past (med - actual)
+                    var medRaw = q[i * ONNX_Q + ONNX_MED_I];
                     var q10raw = q[i * ONNX_Q + ONNX_Q10_I], q90raw = q[i * ONNX_Q + ONNX_Q90_I];
-                    var band = scaleBand(med, q10raw, q90raw, kByBucket[horizonBucket(i)]);
+                    var med = medRaw - bias; // debiased median: subtract the median past error
+                    var band = scaleBand(med, q10raw - bias, q90raw - bias, kByBucket[horizonBucket(i)]); // band follows the correction
                     forecast.push({
                         hour_utc: utcHourKey(t) + ":00",
                         hour_dk: dkLabel(t),
@@ -1582,7 +1585,7 @@
                         q90: band[1],
                         lag1: lag1[i]
                     });
-                    preds.push({ h: i, t: t.getTime(), med: med, q10: q10raw, q90: q90raw }); // store raw band
+                    preds.push({ h: i, t: t.getTime(), med: medRaw, q10: q10raw, q90: q90raw }); // store raw values for calibration
                 }
                 savePreds(preds);
                 state.forecast = forecast;

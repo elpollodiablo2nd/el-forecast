@@ -281,6 +281,19 @@ const wide = pairs.map(p => ({ ...p, act: p.med + 40 })); // all 40 above median
 check("conformalK = 2 when all overshoot 2x", Math.abs(Core.conformalK(wide, 0.85) - 2) < 1e-9);
 check("scaleBand widens by k", JSON.stringify(Core.scaleBand(100, 80, 120, 2)) === JSON.stringify([60, 140]));
 check("scaleBand no k -> unchanged", JSON.stringify(Core.scaleBand(100, 80, 120, NaN)) === JSON.stringify([80, 120]));
+check("scaleBand keeps median inside even when center outside [q10,q90]", (function () {
+    var b = Core.scaleBand(110, 80, 100, 1.5);
+    return b[0] <= 110 && b[1] >= 110 && JSON.stringify(b) === JSON.stringify([65, 110]);
+})());
+check("debiased band contains debiased median for any bias (regression: median outside q10-q90)", (function () {
+    var medRaw = 998, q10 = 911, q90 = 1071, k = 1.5; // DK2 28M h0 raw values
+    for (var bias = -300; bias <= 300; bias += 25) {
+        var med = medRaw - bias;
+        var b = Core.scaleBand(med, q10 - bias, q90 - bias, k);
+        if (!(b[0] <= med && med <= b[1])) return false;
+    }
+    return true;
+})());
 const biased = Array.from({length: 20}, (_, i) => ({ med: 100 + i, act: 90 + i })); // med-act = +10 always
 check("medianError = +10 constant bias", Core.medianError(biased) === 10);
 check("medianError null when few", Core.medianError(biased.slice(0, 5)) === null);
